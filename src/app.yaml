@@ -1,0 +1,29 @@
+application: jamur2nes
+version: 1
+runtime: python
+api_version: 1
+
+handlers:
+
+- url: /
+  script: feedreader/ui/main.py
+
+- url: /ui
+  static_dir: feedreader/ui/static
+
+- url: /api/feed.*
+  script: feedreader/api/feed.py
+
+- url: /api/user.*
+  script: feedreader/api/user.py
+
+- url: /api/entry.*
+  script: feedreader/api/entry.py
+
+- url: /async/.*
+  script: feedreader/async/fetcher.py
+  login: admin
+
+- url: /favicon.ico
+  static_files: favicon.ico
+  upload: favicon.ico

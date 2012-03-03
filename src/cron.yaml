@@ -1,0 +1,9 @@
+cron:
+
+- description: URL fetch scheduler
+  url: /async/url_schedule
+  schedule: every 60 minutes
+
+- description: Entry creation scheduler
+  url: /async/entry_schedule
+  schedule: every 60 minutes

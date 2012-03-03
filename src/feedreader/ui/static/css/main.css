@@ -1,0 +1,30 @@
+body {
+    font-family: Ubuntu, sans-serif;
+    background-color: FEEEED;
+}
+
+video {
+    width: 100%;
+}
+
+#user-div {
+    float: right;
+}
+
+#columns {
+    width: 95%;
+}
+
+#columns .column {
+    position: relative;
+    width: 46%;
+    padding: 1%;
+}
+
+#columns .left {
+    float: left;
+}
+
+#columns .right {
+    float: right;
+}
