@@ -22,17 +22,17 @@ technical know-how, you set up your own instance.  This is for a couple
 reasons:
 
 - The authenticated feeds support is really sketchy, in that you have
-    to send Jamur2nes your password to the feeds for it to make requests
-    on your behalf.  Further, it makes no effort to encrypt the passwords
-    even when at rest.  This is a hobby project after all.  I don't want
-    to know your passwords, so don't tell them to me if you can avoid it
-    (Most podcasts are not authenticated, so for the vast majority of
-    podcasts this isn't an issue).
+  to send Jamur2nes your password to the feeds for it to make requests
+  on your behalf.  Further, it makes no effort to encrypt the passwords
+  even when at rest.  This is a hobby project after all.  I don't want
+  to know your passwords, so don't tell them to me if you can avoid it
+  (Most podcasts are not authenticated, so for the vast majority of
+  podcasts this isn't an issue).
 
 - More selfishly, this is a resource-intensive application on Google App
-    Engine due to lots of background processing of periodic fetches.  If you
-    can run a personal instance of your own on Google's free tier, it's a
-    win-win for all of us.
+  Engine due to lots of background processing of periodic fetches.  If you
+  can run a personal instance of your own on Google's free tier, it's a
+  win-win for all of us.
 
 Those disclaimers aside, this is now my primary podcast client, and it
 is my preferred way to consume long-form audio and video podcast content.
