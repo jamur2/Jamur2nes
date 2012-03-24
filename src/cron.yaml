@@ -7,3 +7,7 @@ cron:
 - description: Entry creation scheduler
   url: /async/entry_schedule
   schedule: every 60 minutes
+
+- description: Stale entry cleanup
+  url: /async/delete_entries
+  schedule: every 24 hours

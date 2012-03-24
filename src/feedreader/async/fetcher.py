@@ -107,10 +107,28 @@ class FetchWorker(google.appengine.ext.webapp.RequestHandler):
             feed.put()
 
 
+class DeleteEntryWorker(google.appengine.ext.webapp.RequestHandler):
+
+    def get(self):
+        self.post()
+
+    def post(self):
+        deleted_count = 0
+        cutoff = datetime.datetime.now() - datetime.timedelta(days=60)
+        cutoff_str = str(cutoff).split('.')[0]
+        for entry in feedreader.models.entry.Entry.gql(
+                "WHERE updated_time < DATETIME('" + cutoff_str + "')"):
+            entry.delete()
+            deleted_count += 1
+            if deleted_count >= 100:
+                return
+
+
 application = google.appengine.ext.webapp.WSGIApplication(
     [('/async/fetch', FetchWorker),
      ('/async/entry_schedule', EntryScheduler),
      ('/async/get_entries', EntryWorker),
+     ('/async/delete_entries', DeleteEntryWorker),
      ('/async/url_schedule', FetchScheduler),],
     debug=True)
 
