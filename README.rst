@@ -61,10 +61,11 @@ Jamur2nes uses `buildout <http://www.buildout.org/>`_ to manage its
 installation in a development environment..  Once you have that installed,
 it's a matter of running the following from your checkout's directory::
 
-    $ buildout bootstrap
+    $ buildout bootstrap --distribute
     $ bin/buildout
 
-To install.
+To install (note, the `--distribute` is important, due to a bug in one of
+our dependencies).
 
 To run a local instance, run::
 
@@ -73,7 +74,3 @@ To run a local instance, run::
 For more detailed instructions on configuration and deployment, see
 `rod.recipe.appengine <http://pypi.python.org/pypi/rod.recipe.appengine>`_,
 the configuration tool used to integrate buildout with App Engine.
-
-There is a caveat, though.  Google App Engine targets Python 2.5, so any
-hacking you do will need to be compatible with that version of Python.  Python
-2.7 support is in the works as of this writing, but has not been released.
