@@ -1,0 +1,127 @@
+<!doctype html>
+<!-- The Time Machine GitHub pages theme was designed and developed by Jon Rohan, on Feb 7, 2012. -->
+<!-- Follow him for fun. http://twitter.com/jonrohan. Tail his code on http://github.com/jonrohan -->
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <link rel="stylesheet" href="stylesheets/stylesheet.css" media="screen"/>
+  <link rel="stylesheet" href="stylesheets/pygment_trac.css"/>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+  <script type="text/javascript" src="javascripts/script.js"></script>
+
+  <title>Jamur2nes</title>
+  <meta name="description" content="HTML5 podcast client running on Google App Engine">
+
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+
+</head>
+
+<body>
+
+  <div class="wrapper">
+    <header>
+      <h1 class="title">Jamur2nes</h1>
+    </header>
+    <div id="container">
+      <p class="tagline">HTML5 podcast client running on Google App Engine</p>
+      <div id="main" role="main">
+        <div class="download-bar">
+        <div class="inner">
+          <a href="https://github.com/jamur2/Jamur2nes/tarball/master" class="download-button tar"><span>Download</span></a>
+          <a href="https://github.com/jamur2/Jamur2nes/zipball/master" class="download-button zip"><span>Download</span></a>
+          <a href="https://github.com/jamur2/Jamur2nes" class="code">View Jamur2nes on GitHub</a>
+        </div>
+        <span class="blc"></span><span class="trc"></span>
+        </div>
+        <article class="markdown-body">
+          <h1>Jamur2nes</h1>
+
+<h2>Features</h2>
+
+<ul>
+<li>Entirely web-based, no client required</li>
+<li>Supports audio and video; the only limit is what your browser supports</li>
+<li>Pause on one machine and resume on another: Perfect for long-form audio</li>
+<li>Supports authenticated feeds</li>
+</ul><h2>About</h2>
+
+<p>This project is a personal itch-scratcher for me, in that I wanted to play
+around on Google App Engine, and I couldn't find a podcast client that
+matched all my needs.  You can see a running instance of it at
+<a href="http://jamur2nes.appspot.com">jamur2nes</a>, although I highly recommend if you have the
+technical know-how, you set up your own instance.  This is for a couple
+reasons:</p>
+
+<ul>
+<li><p>The authenticated feeds support is really sketchy, in that you have
+to send Jamur2nes your password to the feeds for it to make requests
+on your behalf.  Further, it makes no effort to encrypt the passwords
+even when at rest.  This is a hobby project after all.  I don't want
+to know your passwords, so don't tell them to me if you can avoid it
+(Most podcasts are not authenticated, so for the vast majority of
+podcasts this isn't an issue).</p></li>
+<li><p>More selfishly, this is a resource-intensive application on Google App
+Engine due to lots of background processing of periodic fetches.  If you
+can run a personal instance of your own on Google's free tier, it's a
+win-win for all of us.</p></li>
+</ul><p>Those disclaimers aside, this is now my primary podcast client, and it
+is my preferred way to consume long-form audio and video podcast content.
+Enjoy.</p>
+
+<h2>Known Issues</h2>
+
+<ul>
+<li><p>Podcasts hosted on Cachefly do not play correctly.  This is due to the fact
+that Chrome is very finnicky about Content-Length headers, and Cachefly
+doesn't set them correctly.</p></li>
+<li><p>Long videos (&gt; 1 hour) may not play correctly.  I'm not sure what causes
+this, but it seems like a bug in how large files are loaded.</p></li>
+<li><p>Since playback relies entirely on the <code>&lt;audio&gt;</code> and <code>&lt;video&gt;</code> tags, you
+are at the whim of your browser for supported codecs.  I recommend Chrome,
+but even Chrome doesn't support AAC playback.</p></li>
+</ul><h2>Setup</h2>
+
+<p>Jamur2nes uses <a href="http://buildout.org/">buildout</a> to manage its
+installation in a development environment..  Once you have that installed,
+it's a matter of running the following from your checkout's directory::</p>
+
+<pre><code>$ buildout bootstrap --distribute
+$ bin/buildout
+</code></pre>
+
+<p>To install (note, the <code>--distribute</code> is important, due to a bug in one of
+our dependencies).</p>
+
+<p>To run a local instance, run::</p>
+
+<pre><code>$ bin/dev_appserver parts/feedreader
+</code></pre>
+
+<p>For more detailed instructions on configuration and deployment, see
+<a href="http://pypi.python.org/pypi/rod.recipe.appengine">rod.recipe.appengine</a>,
+the configuration tool used to integrate buildout with App Engine.</p>
+        </article>
+      </div>
+    </div>
+    <footer>
+      <div class="owner">
+      <p><a href="https://github.com/jamur2" class="avatar"><img src="https://secure.gravatar.com/avatar/8113c3ad0f3c91c3b4341e96895612d3?s=30&amp;d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png" width="48" height="48"/></a> <a href="https://github.com/jamur2">jamur2</a> maintains <a href="https://github.com/jamur2/Jamur2nes">Jamur2nes</a></p>
+
+
+      </div>
+      <div class="creds">
+        <small>This page generated using <a href="https://pages.github.com/">GitHub Pages</a><br/>theme by <a href="http://twitter.com/jonrohan/">Jon Rohan</a></small>
+      </div>
+    </footer>
+  </div>
+  <div class="current-section">
+    <a href="#top">Scroll to top</a>
+    <a href="https://github.com/jamur2/Jamur2nes/tarball/master" class="tar">tar</a><a href="https://github.com/jamur2/Jamur2nes/zipball/master" class="zip">zip</a><a href="" class="code">source code</a>
+    <p class="name"></p>
+  </div>
+
+  
+</body>
+</html>
