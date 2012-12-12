@@ -9,8 +9,6 @@ feedreader.current_subscriptions = {};
 feedreader.current_entries = {};
 feedreader.selected_feed = null;
 feedreader.selected_entry = null;
-feedreader.disable_pause_event = false; // Hack around chrome firing an event
-                                        // too often
 
 dojo.addOnLoad(function() {
     feedreader.update_login_button = function(response)
@@ -53,7 +51,6 @@ dojo.addOnLoad(function() {
 
     feedreader.on_ended = function(end_event)
     {
-        feedreader.disable_pause_event = true;
         end_event.target.pause();
         end_event.target.currentTime = 0;
         dojo.xhrPost({
@@ -81,15 +78,12 @@ dojo.addOnLoad(function() {
 
     feedreader.on_pause = function(pause_event)
     {
-        if (!feedreader.disable_pause_event)
-        {
-            dojo.xhrPost({
-                url: "/api/entry",
-                content: {key: feedreader.selected_entry,
-                    timestamp: parseInt(pause_event.target.currentTime, 10)},
+        dojo.xhrPost({
+            url: "/api/entry",
+            content: {key: feedreader.selected_entry,
+                timestamp: parseInt(pause_event.target.currentTime, 10)},
                 load: feedreader.on_entry_timestamp_updated
-            });
-        }
+        });
     };
 
     feedreader.on_play = function(play_event)
