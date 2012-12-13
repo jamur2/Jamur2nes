@@ -41,7 +41,6 @@ dojo.addOnLoad(function() {
     feedreader.on_entry_timestamp_updated = function(response)
     {
         var entry = eval('(' + response + ')');
-        feedreader.redraw_entry(entry);
         feedreader.current_entries[entry.key] = entry;
     };
 
