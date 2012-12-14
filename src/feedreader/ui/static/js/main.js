@@ -77,12 +77,15 @@ dojo.addOnLoad(function() {
 
     feedreader.on_pause = function(pause_event)
     {
-        dojo.xhrPost({
-            url: "/api/entry",
-            content: {key: feedreader.selected_entry,
-                timestamp: parseInt(pause_event.target.currentTime, 10)},
-                load: feedreader.on_entry_timestamp_updated
-        });
+        if (pause_event.target.currentTime + 60 < pause_event.target.duration)
+        {
+            dojo.xhrPost({
+                url: "/api/entry",
+                content: {key: feedreader.selected_entry,
+                    timestamp: parseInt(pause_event.target.currentTime, 10)},
+                    load: feedreader.on_entry_timestamp_updated
+            });
+        }
     };
 
     feedreader.on_play = function(play_event)
