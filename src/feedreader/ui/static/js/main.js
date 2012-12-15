@@ -42,6 +42,7 @@ dojo.addOnLoad(function() {
     {
         var entry = eval('(' + response + ')');
         feedreader.current_entries[entry.key] = entry;
+        feedreader.redraw_entry(entry);
     };
 
     feedreader.on_media_error = function(error_event)
@@ -50,15 +51,7 @@ dojo.addOnLoad(function() {
 
     feedreader.on_ended = function(end_event)
     {
-        end_event.target.pause();
-        end_event.target.currentTime = 0;
-        dojo.xhrPost({
-            url: "/api/entry",
-            content: {key: feedreader.selected_entry,
-                timestamp: 0,
-                play_count: parseInt(feedreader.current_entries[feedreader.selected_entry].play_count + 1, 10)},
-            load: feedreader.on_entry_timestamp_updated
-        });
+        feedreader.on_increment_playcount(end_event);
     };
 
     feedreader.on_increment_playcount = function(increment_event)
@@ -72,7 +65,10 @@ dojo.addOnLoad(function() {
         });
         var increment_playcount_button = dojo.byId("button-mark-as-played");
         var player_element = dojo.byId("player-div");
-        player_element.removeChild(increment_playcount_button);
+        if (increment_playcount_button)
+        {
+            player_element.removeChild(increment_playcount_button);
+        }
     };
 
     feedreader.on_pause = function(pause_event)
