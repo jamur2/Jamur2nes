@@ -9,8 +9,10 @@ feedreader.current_subscriptions = {};
 feedreader.current_entries = {};
 feedreader.selected_feed = null;
 feedreader.selected_entry = null;
+feedreader.progress_interval = null;
 
 dojo.addOnLoad(function() {
+
     feedreader.update_login_button = function(response)
     {
         var button = null;
@@ -73,6 +75,10 @@ dojo.addOnLoad(function() {
 
     feedreader.on_pause = function(pause_event)
     {
+        if (feedreader.progress_interval)
+        {
+            window.clearInterval(feedreader.progress_interval);
+        }
         if (pause_event.target.currentTime + 60 < pause_event.target.duration)
         {
             dojo.xhrPost({
@@ -88,6 +94,18 @@ dojo.addOnLoad(function() {
     {
         feedreader.disable_pause_event = false;
         play_event.target.currentTime = feedreader.current_entries[feedreader.selected_entry].timestamp;
+        feedreader.progress_interval = window.setInterval(
+            function()
+            {
+                dojo.xhrPost({
+                    url: "/api/entry",
+                    content: {
+                        key: feedreader.selected_entry,
+                        timestamp: parseInt(pause_event.target.currentTime, 10)
+                    },
+                });
+            },
+            10000);
     };
 
     feedreader.on_entry_select = function(selected_entry_key)
