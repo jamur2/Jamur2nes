@@ -101,11 +101,11 @@ dojo.addOnLoad(function() {
                     url: "/api/entry",
                     content: {
                         key: feedreader.selected_entry,
-                        timestamp: parseInt(pause_event.target.currentTime, 10)
+                        timestamp: parseInt(play_event.target.currentTime, 10)
                     },
                 });
             },
-            10000);
+            60000);
     };
 
     feedreader.on_entry_select = function(selected_entry_key)
