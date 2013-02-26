@@ -57,20 +57,10 @@ Known Issues
 Setup
 -----
 
-Jamur2nes uses `buildout <http://www.buildout.org/>`_ to manage its
-installation in a development environment..  Once you have that installed,
-it's a matter of running the following from your checkout's directory::
+Jamur2nes uses the `Python Google App Engine SDK
+<https://developers.google.com/appengine/downloads#Google_App_Engine_SDK_for_Python>`_.
 
-    $ buildout bootstrap --distribute
-    $ bin/buildout
+Once you have that installed (we'll pretend it's in $GAE_SDK),
+you can run a local instance with::
 
-To install (note, the `--distribute` is important, due to a bug in one of
-our dependencies).
-
-To run a local instance, run::
-
-    $ bin/dev_appserver parts/feedreader
-
-For more detailed instructions on configuration and deployment, see
-`rod.recipe.appengine <http://pypi.python.org/pypi/rod.recipe.appengine>`_,
-the configuration tool used to integrate buildout with App Engine.
+    > $GAE_SDK/dev_appserver.py src

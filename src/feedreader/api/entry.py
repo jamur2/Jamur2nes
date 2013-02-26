@@ -3,7 +3,7 @@ import feedreader.utils
 import google.appengine.api.datastore_errors
 import google.appengine.ext.webapp
 import google.appengine.ext.webapp.util
-import simplejson
+import json
 
 
 class EntryAPI(google.appengine.ext.webapp.RequestHandler):
@@ -14,7 +14,7 @@ class EntryAPI(google.appengine.ext.webapp.RequestHandler):
             entity = google.appengine.ext.db.get(
                 google.appengine.ext.db.Key(key))
         except google.appengine.api.datastore_errors.BadKeyError:
-            error = simplejson.dumps({'error': 'No such entry'})
+            error = json.dumps({'error': 'No such entry'})
             self.response.out.write(error)
             return
         feedreader.utils.json_respond(self.response, entity)
@@ -30,7 +30,7 @@ class EntryAPI(google.appengine.ext.webapp.RequestHandler):
             entry = google.appengine.ext.db.get(
                 google.appengine.ext.db.Key(key))
         except google.appengine.api.datastore_errors.BadKeyError:
-            error = simplejson.dumps({'error': 'No such entry'})
+            error = json.dumps({'error': 'No such entry'})
             self.response.out.write(error)
             return
 

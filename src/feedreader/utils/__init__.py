@@ -3,7 +3,7 @@ import feedreader.models.user
 import feedreader.utils.debug
 import google.appengine.api.users
 import google.appengine.ext.db
-import simplejson
+import json
 
 
 def json_respond(response, entity):
@@ -28,7 +28,7 @@ def to_json(entity):
             obj[key] = obj[key].user_id()
     obj['key'] = str(entity.key())
     obj = sanitize_dict(obj)
-    return simplejson.dumps(obj)
+    return json.dumps(obj)
 
 
 def get_current_user():

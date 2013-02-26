@@ -5,7 +5,7 @@ import google.appengine.api.taskqueue
 import google.appengine.ext.db
 import google.appengine.ext.webapp
 import google.appengine.ext.webapp.util
-import simplejson
+import json
 import sys
 
 class FeedAPI(google.appengine.ext.webapp.RequestHandler):
@@ -16,7 +16,7 @@ class FeedAPI(google.appengine.ext.webapp.RequestHandler):
             entity = google.appengine.ext.db.get(
                 google.appengine.ext.db.Key(key))
         except google.appengine.api.datastore_errors.BadKeyError:
-            error = simplejson.dumps({'error': 'No such feed'})
+            error = json.dumps({'error': 'No such feed'})
             self.response.out.write(error)
             return
         feedreader.utils.json_respond(self.response, entity)
@@ -25,14 +25,14 @@ class FeedAPI(google.appengine.ext.webapp.RequestHandler):
         user = feedreader.utils.get_current_user()
         if not user:
             # Not logged in
-            error = simplejson.dumps({'error': 'Not logged in'})
+            error = json.dumps({'error': 'Not logged in'})
             self.response.out.write(error)
             return
         try:
             key = google.appengine.ext.db.Key(self.request.get('key'))
             feed = google.appengine.ext.db.get(key)
         except google.appengine.api.datastore_errors.BadKeyError:
-            error = simplejson.dumps({'error': 'No such feed'})
+            error = json.dumps({'error': 'No such feed'})
             self.response.out.write(error)
             return
         success = False
@@ -41,9 +41,9 @@ class FeedAPI(google.appengine.ext.webapp.RequestHandler):
             success = True
         user.put()
         if success:
-            response = simplejson.dumps({'success': True})
+            response = json.dumps({'success': True})
         else:
-            response = simplejson.dumps({
+            response = json.dumps({
                 'error': "Couldn't find subscription"})
         self.response.out.write(response)
 
