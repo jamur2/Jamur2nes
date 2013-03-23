@@ -57,11 +57,6 @@ class EntryWorker(google.appengine.ext.webapp.RequestHandler):
                 entry_id = entry['id']
             elif len(entry.enclosures) >= 1:
                 entry_id = entry.enclosures[0].href
-            if (feed.url.startswith("http://www.giantbomb.com/videos") or
-                feed.url.startswith("http://www.tested.com/videos") or
-                feed.url.startswith("http://www.screened.com/videos")):
-                # XXX Hack for Giant Bomb feed brokenness
-                entry_id = '-'.join([entry.updated,entry.title])
             if entry_id:
                 if len(entry.enclosures) >= 1:
                     enclosure = entry.enclosures[0].href
