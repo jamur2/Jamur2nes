@@ -24,6 +24,10 @@ def to_json(entity):
         if isinstance(obj[key], google.appengine.ext.db.Model):
             # Object references serialize as a key
             obj[key] = str(obj[key].key())
+        if isinstance(
+                obj[key], google.appengine.ext.blobstore.blobstore.BlobInfo):
+            # Don't JSON-serialize blobs
+            del obj[key]
         elif isinstance(obj[key], google.appengine.api.users.User):
             obj[key] = obj[key].user_id()
     obj['key'] = str(entity.key())

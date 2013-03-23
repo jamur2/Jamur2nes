@@ -7,8 +7,10 @@ import feedreader.models.feed
 import feedreader.models.user
 import feedreader.utils
 import feedreader.utils.debug
+import google.appengine.api.files.blobstore
 import google.appengine.api.taskqueue
 import google.appengine.api.urlfetch
+import google.appengine.ext.blobstore
 import google.appengine.ext.webapp
 import google.appengine.ext.webapp.util
 
@@ -38,7 +40,12 @@ class EntryWorker(google.appengine.ext.webapp.RequestHandler):
         feed_key = google.appengine.ext.db.Key(self.request.get('feed'))
         user = google.appengine.ext.db.get(user_key)
         feed = google.appengine.ext.db.get(feed_key)
+        feed_blob_info = feed.contents_blob_info
         feed_contents = StringIO.StringIO(feed.contents)
+        if feed_blob_info:
+            fi = feed_blob_info.open('r')
+            feed_contents = StringIO.StringIO(fi.read())
+            fi.close()
         parsed_feed = feedparser.parse(feed_contents)
         if 'title' in parsed_feed['feed']:
             feed.title = parsed_feed['feed']['title']
@@ -100,8 +107,16 @@ class FetchWorker(google.appengine.ext.webapp.RequestHandler):
         except google.appengine.api.urlfetch.Error:
             raise # XXX Add error-handling logic
         if response.status_code == 200:
-            feed.contents = response.content
-            parsed_feed = feedparser.parse(feed.contents)
+            if feed.contents_blob_info is not None:
+                blob_info = feed.contents_blob_info
+                blob_info.delete()
+            file_name = google.appengine.api.files.blobstore.create()
+            with google.appengine.api.files.open(file_name, 'a') as fi:
+                fi.write(response.content)
+            google.appengine.api.files.finalize(file_name)
+            feed.contents_blob_info = google.appengine.ext.blobstore.BlobInfo.get(
+                google.appengine.api.files.blobstore.get_blob_key(file_name))
+            parsed_feed = feedparser.parse(response.content)
             feed.title = parsed_feed['feed']['title']
             feed.last_fetched = datetime.datetime.now()
             feed.put()
