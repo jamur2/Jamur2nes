@@ -7,6 +7,7 @@ import feedreader.models.feed
 import feedreader.models.user
 import feedreader.utils
 import feedreader.utils.debug
+import google.appengine.api.files
 import google.appengine.api.files.blobstore
 import google.appengine.api.taskqueue
 import google.appengine.api.urlfetch
