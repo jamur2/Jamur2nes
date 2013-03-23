@@ -10,6 +10,10 @@ class EntryAPI(google.appengine.ext.webapp.RequestHandler):
 
     def get(self):
         key = self.request.get('key')
+        cached_entry = google.appengine.api.memcache.get(key)
+        if cached_entry:
+            self.response.out.write(cached_entry)
+            return
         try:
             entity = google.appengine.ext.db.get(
                 google.appengine.ext.db.Key(key))
@@ -17,6 +21,8 @@ class EntryAPI(google.appengine.ext.webapp.RequestHandler):
             error = json.dumps({'error': 'No such entry'})
             self.response.out.write(error)
             return
+        google.appengine.api.memcache.set(
+            key, feedreader.utils.to_json(entity), 86400)
         feedreader.utils.json_respond(self.response, entity)
 
     def post(self):
@@ -44,6 +50,7 @@ class EntryAPI(google.appengine.ext.webapp.RequestHandler):
         if timestamp:
             entry.timestamp = int(timestamp)
         entry.put()
+        google.appengine.api.memcache.delete(key)
         feedreader.utils.json_respond(self.response, entry)
 
 
