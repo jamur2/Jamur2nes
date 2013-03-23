@@ -1,6 +1,7 @@
 import feedreader.models.feed
 import feedreader.utils
 import feedreader.utils.debug
+import google.appengine.api.memcache
 import google.appengine.api.taskqueue
 import google.appengine.ext.db
 import google.appengine.ext.webapp
@@ -12,6 +13,10 @@ class FeedAPI(google.appengine.ext.webapp.RequestHandler):
 
     def get(self):
         key = self.request.get('key')
+        cached_feed = google.appengine.api.memcache.get(key)
+        if cached_feed:
+            self.response.out.write(cached_feed)
+            return
         try:
             entity = google.appengine.ext.db.get(
                 google.appengine.ext.db.Key(key))
@@ -19,6 +24,8 @@ class FeedAPI(google.appengine.ext.webapp.RequestHandler):
             error = json.dumps({'error': 'No such feed'})
             self.response.out.write(error)
             return
+        google.appengine.api.memcache.set(
+            key, feedreader.utils.to_json(entity), 86400)
         feedreader.utils.json_respond(self.response, entity)
 
     def delete(self):
