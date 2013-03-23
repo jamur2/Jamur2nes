@@ -58,11 +58,23 @@ class EntriesAPI(google.appengine.ext.webapp.RequestHandler):
         self.response.out.write(json.dumps(entries))
 
 
+class UnlistenedAPI(google.appengine.ext.webapp.RequestHandler):
+
+    def get(self):
+        user = feedreader.utils.get_current_user()
+        query = feedreader.models.entry.Entry.all()
+        query.filter('user =', user.user)
+        query.filter('play_count =', 0)
+        query.order('-updated_time')
+        entries = query.fetch(10)
+        entries = [str(entry.key()) for entry in entries]
+        self.response.out.write(json.dumps(entries))
 
 
 application = google.appengine.ext.webapp.WSGIApplication(
     [('/api/user', UserAPI),
      ('/api/user/subscriptions', SubscriptionsAPI),
+     ('/api/user/unlistened', UnlistenedAPI),
      ('/api/user/entries', EntriesAPI),],
     debug=True)
 

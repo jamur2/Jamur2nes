@@ -28,3 +28,10 @@ indexes:
   - name: user
   - name: updated_time
     direction: desc
+
+- kind: Entry
+  properties:
+  - name: play_count
+  - name: user
+  - name: updated_time
+    direction: desc

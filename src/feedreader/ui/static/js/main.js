@@ -196,7 +196,15 @@ dojo.addOnLoad(function() {
         var entries_widget = dojo.byId("entries-div");
         var subscription_title = dojo.byId("subscription-title-div");
         var entry_key = null;
-        subscription_title.textContent = feedreader.current_subscriptions[feedreader.selected_feed].title;
+        if (feedreader.selected_feed != null)
+        {
+            subscription_title.textContent = feedreader.current_subscriptions[
+                feedreader.selected_feed].title;
+        }
+        else
+        {
+            subscription_title.textContent = "Unlistened";
+        }
         var on_select_func = function(e_key)
         {
             return function (e)
@@ -264,6 +272,14 @@ dojo.addOnLoad(function() {
         feedreader.redraw_current_entries();
     };
 
+    feedreader.update_unlistened_entries = function()
+    {
+        dojo.xhrGet({
+            url: "/api/user/unlistened",
+            load: feedreader.on_get_entries_status
+        });
+    }
+
     feedreader.update_current_entries = function()
     {
         dojo.xhrGet({
@@ -311,6 +327,8 @@ dojo.addOnLoad(function() {
     {
         var selected_subscription_element = dojo.byId("subscriptiontitle-" + selected_subscription_key);
         selected_subscription_element.style.cssText = "font-weight:bold"; // XXX use real CSS
+        var unlistened_element = dojo.byId("unlistened-label");
+        unlistened_element.style.cssText = ""; // XXX use real CSS
         var subscription_key = null;
         for (subscription_key in feedreader.current_subscriptions)
         {
@@ -346,6 +364,37 @@ dojo.addOnLoad(function() {
             content = "Loading subscription...";
         }
         subscription_element.innerHTML = content;
+    };
+
+    feedreader.on_unlistened_select = function()
+    {
+        feedreader.current_entries = {};
+        var unlistened_element = dojo.byId("unlistened-label");
+        unlistened_element.style.cssText = "font-weight:bold"; // XXX use real CSS
+        for (subscription_key in feedreader.current_subscriptions)
+        {
+            var subscription_element = dojo.byId("subscriptiontitle-" + subscription_key);
+            subscription_element.style.cssText = ""; // XXX use real CSS
+        }
+        feedreader.selected_feed = null;
+        var entries_widget = dojo.byId("entries-div");
+        entries_widget.innerHTML = "";
+        feedreader.update_unlistened_entries();
+    };
+
+    feedreader.add_unlistened_button = function()
+    {
+        var unlistened_div = dojo.byId("unlistened-div");
+        var unlistened_button = document.createElement("button");
+        unlistened_button.id = "unlistened-button";
+        unlistened_button.textContent = "Select";
+        dojo.connect(unlistened_button, "onclick",
+            feedreader.on_unlistened_select);
+        unlistened_div.appendChild(unlistened_button);
+        var unlistened_entry = document.createElement("span");
+        unlistened_entry.id = "unlistened-label";
+        unlistened_entry.textContent = "All unlistened";
+        unlistened_div.appendChild(unlistened_entry);
     };
 
     feedreader.redraw_current_subscriptions = function()
@@ -500,6 +549,7 @@ dojo.addOnLoad(function() {
         {
             feedreader.refresh_subscriptions_status();
             feedreader.activate_subscription_adder();
+            feedreader.add_unlistened_button();
         }
     };
 
