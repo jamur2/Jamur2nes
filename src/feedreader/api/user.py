@@ -1,3 +1,4 @@
+import datetime
 import feedreader.models.entry
 import feedreader.models.feed
 import feedreader.models.user
@@ -65,6 +66,8 @@ class UnlistenedAPI(google.appengine.ext.webapp.RequestHandler):
         query = feedreader.models.entry.Entry.all()
         query.filter('user =', user.user)
         query.filter('play_count =', 0)
+        query.filter('updated_time >',
+            datetime.datetime.now() - datetime.timedelta(days=45))
         query.order('-updated_time')
         entries = query.fetch(10)
         entries = [str(entry.key()) for entry in entries]
