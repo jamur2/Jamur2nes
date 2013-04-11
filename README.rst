@@ -42,12 +42,8 @@ Enjoy.
 Known Issues
 ------------
 
-- Podcasts hosted on Cachefly do not play correctly.  This is due to the fact
-  that Chrome is very finnicky about Content-Length headers, and Cachefly
-  doesn't set them correctly.
-
-- Long videos (> 1 hour) may not play correctly.  I'm not sure what causes
-  this, but it seems like a bug in how large files are loaded.
+- Some videos may not play correctly.  HTML5 video buffering can be pretty
+  finnicky, especially on longer videos.
 
 - Since playback relies entirely on the ``<audio>`` and ``<video>`` tags, you
   are at the whim of your browser for supported codecs.  I recommend Chrome,
