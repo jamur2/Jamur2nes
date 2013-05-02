@@ -116,7 +116,7 @@ class FetchWorker(google.appengine.ext.webapp.RequestHandler):
             feed.contents_blob_info = google.appengine.ext.blobstore.BlobInfo.get(
                 google.appengine.api.files.blobstore.get_blob_key(file_name))
             parsed_feed = feedparser.parse(response.content)
-            feed.title = parsed_feed['feed']['title']
+            feed.title = parsed_feed['feed'].get('title', 'Unknown')
             feed.last_fetched = datetime.datetime.now()
             feed.put()
 
