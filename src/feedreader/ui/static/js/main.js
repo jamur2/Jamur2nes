@@ -132,8 +132,11 @@ dojo.addOnLoad(function() {
         var media_element = null;
         if (content_url.indexOf(".mp4") >= 0 || content_url.indexOf(".m4v") >= 0)
         {
+            if (dojo.byId("video-player-" + feedreader.video_player_id)) {
+                dojo.destroy("video-player-" + feedreader.video_player_id);
+            }
             var media_element = dojo.create("video");
-            // XXX Can't reliably destroy video.js players
+            // XXX Can't reuse ids with video.js players
             feedreader.video_player_id += 1;
             media_element.id = "video-player-" + feedreader.video_player_id;
             media_element.setAttribute(
