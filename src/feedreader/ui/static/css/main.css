@@ -28,3 +28,6 @@ video {
 #columns .right {
     float: right;
 }
+
+.video-js { width: 100%!important; }
+.video-js { height: 100%!important; }

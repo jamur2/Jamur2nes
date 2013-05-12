@@ -10,6 +10,7 @@ feedreader.current_entries = {};
 feedreader.selected_feed = null;
 feedreader.selected_entry = null;
 feedreader.progress_interval = null;
+feedreader.video_player_id = 0;
 
 dojo.addOnLoad(function() {
 
@@ -131,7 +132,12 @@ dojo.addOnLoad(function() {
         var media_element = null;
         if (content_url.indexOf(".mp4") >= 0 || content_url.indexOf(".m4v") >= 0)
         {
-            media_element = document.createElement("video");
+            var media_element = dojo.create("video");
+            // XXX Can't reliably destroy video.js players
+            feedreader.video_player_id += 1;
+            media_element.id = "video-player-" + feedreader.video_player_id;
+            media_element.setAttribute(
+                "class", "video-js vjs-default-skin");
         }
         else
         {
@@ -143,7 +149,8 @@ dojo.addOnLoad(function() {
         dojo.connect(media_element, "onplay", feedreader.on_play);
         dojo.connect(media_element, "onended", feedreader.on_ended);
         dojo.connect(media_element, "onerror", feedreader.on_media_error);
-        dojo.connect(media_element, "ondurationchange", feedreader.on_duration_change);
+        dojo.connect(
+            media_element, "ondurationchange", feedreader.on_duration_change);
         var title_element = document.createElement("div");
         title_element.textContent = feedreader.current_entries[selected_entry_key].title;
         title_element.style.cssText = "font-weight:bold"; // XXX use real CSS
@@ -162,13 +169,14 @@ dojo.addOnLoad(function() {
             dojo.connect(mark_as_played_element, "onclick", feedreader.on_increment_playcount);
             player_element.appendChild(mark_as_played_element);
         }
+        _V_("video-player-" + feedreader.video_player_id, {}, function(){});
     };
 
     feedreader.on_duration_change = function(event)
     {
         var selected_entry_key = feedreader.selected_entry;
         var player_element = dojo.byId("player-div");
-        var media_element = player_element.childNodes[0];
+        var media_element = event.target;
         var duration_min = Math.floor(media_element.duration / 60);
         var duration_sec = Math.floor(media_element.duration % 60);
         if (duration_sec < 10)
