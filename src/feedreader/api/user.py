@@ -68,7 +68,7 @@ class UnlistenedAPI(google.appengine.ext.webapp.RequestHandler):
         query.filter('play_count =', 0)
         query.filter('updated_time >',
             datetime.datetime.now() - datetime.timedelta(days=45))
-        query.order('-updated_time')
+        query.order('updated_time')
         entries = query.fetch(10)
         entries = [str(entry.key()) for entry in entries]
         self.response.out.write(json.dumps(entries))
