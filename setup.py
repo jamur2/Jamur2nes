@@ -12,6 +12,6 @@ setup(
   include_package_data=True,
   install_requires=[
     'feedparser',
-    'simplejson==2.1.3',
+    'simplejson==2.6.1',
   ],
 )
